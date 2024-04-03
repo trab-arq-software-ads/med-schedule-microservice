@@ -1,6 +1,6 @@
 # Doctors and Patients API 
 
-This is a simple API in Express with PostgreSQL.
+Using Express with PostgreSQL.
 
 ## Running the app 
 
