@@ -1,4 +1,4 @@
-# Doctors and Patients API 
+# MedSchedule Microservice API
 
 Using Express with PostgreSQL
 
