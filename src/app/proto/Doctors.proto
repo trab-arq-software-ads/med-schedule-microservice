@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+message Doctor {
+  string id = 1;
+  string name = 2;
+  string specialization = 3;
+}
+
+service DoctorService {
+  rpc ListDoctors (DoctorListRequest) returns (DoctorListResponse);
+  rpc GetDoctor (DoctorGetRequest) returns (DoctorGetResponse);
+  rpc CreateDoctor (DoctorCreateRequest) returns (DoctorCreateResponse);
+  rpc UpdateDoctor (DoctorUpdateRequest) returns (DoctorUpdateResponse);
+  rpc DeleteDoctor (DoctorDeleteRequest) returns (DoctorDeleteResponse);
+}
+
+message DoctorListRequest {}
+message DoctorListResponse {
+  repeated Doctor doctors = 1;
+}
+
+message DoctorGetRequest {
+  string id = 1;
+}
+message DoctorGetResponse {
+  Doctor doctor = 1;
+}
+
+message DoctorCreateRequest {
+  string name = 1;
+  string specialization = 2;
+}
+message DoctorCreateResponse {
+  Doctor doctor = 1;
+}
+
+message DoctorUpdateRequest {
+  string id = 1;
+  string name = 2;
+  string specialization = 3;
+}
+message DoctorUpdateResponse {
+  Doctor doctor = 1;
+}
+
+message DoctorDeleteRequest {
+  string id = 1;
+}
+message DoctorDeleteResponse {}
