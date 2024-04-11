@@ -20,7 +20,7 @@ class PatientController {
   }
 
   async create(request, response) {
-    const { name, email, phone, birthday } = request.body;
+    const { name, email, phone } = request.body;
 
     if (!name) {
       return response.status(400).json({ error: "Name is required" });
@@ -38,7 +38,6 @@ class PatientController {
       name,
       email,
       phone,
-      birthday,
     });
 
     response.json(patient);
@@ -46,7 +45,7 @@ class PatientController {
 
   async update(request, response) {
     const { id } = request.params;
-    const { name, email, phone, birthday } = request.body;
+    const { name, email, phone } = request.body;
 
     const patientExists = await PatientRepository.findById(id);
 
@@ -70,7 +69,6 @@ class PatientController {
       name,
       email,
       phone,
-      birthday,
     });
 
     response.json(patient);

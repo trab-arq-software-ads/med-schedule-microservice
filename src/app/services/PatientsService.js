@@ -66,7 +66,7 @@ class PatientServer {
   }
 
   createPatient(call, callback) {
-    const { name, email, phone, birthday } = call.request;
+    const { name, email, phone } = call.request;
 
     // validation
     if (!name) {
@@ -91,7 +91,7 @@ class PatientServer {
           return;
         }
 
-        PatientsRepository.create({ name, email, phone, birthday })
+        PatientsRepository.create({ name, email, phone })
           .then((newPatient) => {
             const response = { patient: newPatient };
             callback(null, response);
@@ -106,7 +106,7 @@ class PatientServer {
   }
 
   updatePatient(call, callback) {
-    const { id, name, email, phone, birthday } = call.request;
+    const { id, name, email, phone } = call.request;
 
     PatientsRepository.findById(id)
       .then((existingPatient) => {
@@ -140,7 +140,7 @@ class PatientServer {
               return;
             }
 
-            PatientsRepository.update(id, { name, email, phone, birthday })
+            PatientsRepository.update(id, { name, email, phone })
               .then((updatedPatient) => {
                 const response = { patient: updatedPatient };
                 callback(null, response);
