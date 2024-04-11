@@ -20,9 +20,14 @@ class PatientRepository {
     return rows;
   }
 
+  // async findById(id) {
+  //   const [row] = await db.query("SELECT * FROM patients WHERE id = $1", [id]);
+
+  //   return row;
+  // }
   async findById(id) {
     const [row] = await db.query("SELECT * FROM patients WHERE id = $1", [id]);
-
+    console.log("Patient found:", row); // Adicione este console.log
     return row;
   }
 

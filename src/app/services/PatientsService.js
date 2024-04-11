@@ -1,7 +1,6 @@
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
-const PatientsRepository = require("../repositories/PatientsRepository");
 
 // Loading the .proto file
 const packageDefinition = protoLoader.loadSync(
@@ -18,6 +17,8 @@ const packageDefinition = protoLoader.loadSync(
 const patientsProto = grpc.loadPackageDefinition(packageDefinition);
 
 const { PatientService } = patientsProto;
+
+const PatientsRepository = require("../repositories/PatientsRepository");
 
 // Defining the PatientServer class that contains the logic for the gRPC methods
 class PatientServer {
@@ -50,13 +51,13 @@ class PatientServer {
     PatientsRepository.findById(id)
       .then((patient) => {
         if (!patient) {
-          callback({
-            code: grpc.status.NOT_FOUND,
-            details: "Patient not found",
-          });
+          callback(
+            { code: grpc.status.NOT_FOUND, details: "Patient not found" },
+            null
+          );
           return;
         }
-        const response = { patient };
+        const response = { patients: patient };
         callback(null, response);
       })
       .catch((error) => {
@@ -76,23 +77,23 @@ class PatientServer {
       return;
     }
 
-    PatientsRepository.findByName(name)
+    PatientsRepository.findByEmail(email)
       .then((existentPatient) => {
         // validation
         if (existentPatient) {
           callback(
             {
               code: grpc.status.ALREADY_EXISTS,
-              details: "This name is already in use",
+              details: "This e-mail is already in use",
             },
             null
           );
           return;
         }
 
-        PatientsRepository.create(name, email, phone, birthday)
+        PatientsRepository.create({ name, email, phone, birthday })
           .then((newPatient) => {
-            const response = { newPatient };
+            const response = { patient: newPatient };
             callback(null, response);
           })
           .catch((error) => {
@@ -105,9 +106,16 @@ class PatientServer {
   }
 
   updatePatient(call, callback) {
-    const { id, name, specialization } = call.request;
-
-    PatientRepository.findById(id)
+    const { id, name, email, phone, birthday } = call.request;
+    console.log(
+      "id, name, email, phone, birthday",
+      id,
+      name,
+      email,
+      phone,
+      birthday
+    );
+    PatientsRepository.findById(id)
       .then((existingPatient) => {
         if (!existingPatient) {
           callback(
@@ -126,20 +134,20 @@ class PatientServer {
           return;
         }
 
-        PatientRepository.findByName(name)
+        PatientsRepository.findByEmail(email)
           .then((patientByName) => {
             if (patientByName && patientByName.id !== id) {
               callback(
                 {
                   code: grpc.status.ALREADY_EXISTS,
-                  details: "This name is already in use",
+                  details: "This e-mail is already in use",
                 },
                 null
               );
               return;
             }
 
-            PatientRepository.update(id, { name, specialization })
+            PatientsRepository.update(id, { name, email, phone, birthday })
               .then((updatedPatient) => {
                 const response = { patient: updatedPatient };
                 callback(null, response);
@@ -160,7 +168,7 @@ class PatientServer {
   deletePatient(call, callback) {
     const { id } = call.request;
 
-    PatientRepository.delete(id)
+    PatientsRepository.delete(id)
       .then(() => {
         callback(null, {});
       })

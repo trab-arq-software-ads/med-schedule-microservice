@@ -45,6 +45,7 @@ class DoctorServer {
 
   getDoctor(call, callback) {
     const { id } = call.request;
+    
     DoctorRepository.findById(id)
       .then((doctor) => {
         if (!doctor) {
