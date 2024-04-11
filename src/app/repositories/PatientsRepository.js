@@ -22,7 +22,7 @@ class PatientRepository {
 
   async findById(id) {
     const [row] = await db.query("SELECT * FROM patients WHERE id = $1", [id]);
-    console.log("Patient found:", row); // Adicione este console.log
+
     return row;
   }
 
@@ -39,7 +39,7 @@ class PatientRepository {
       `
     UPDATE patients
     SET name = $1, email = $2, phone = $3
-    WHERE id = $5
+    WHERE id = $4
     RETURNING *
     `,
       [name, email, phone, id]
