@@ -1,5 +1,4 @@
 const DoctorRepository = require("../repositories/DoctorsRepository");
-
 class DoctorController {
   // Método para listar todos os médicos
   async list(request, response) {

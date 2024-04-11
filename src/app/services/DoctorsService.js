@@ -17,6 +17,8 @@ const doctorsProto = grpc.loadPackageDefinition(packageDefinition);
 
 const { DoctorService } = doctorsProto;
 
+const DoctorRepository = require("../repositories/DoctorsRepository");
+
 class DoctorServer {
   constructor() {
     this.server = new grpc.Server();
