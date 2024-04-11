@@ -107,14 +107,7 @@ class PatientServer {
 
   updatePatient(call, callback) {
     const { id, name, email, phone, birthday } = call.request;
-    console.log(
-      "id, name, email, phone, birthday",
-      id,
-      name,
-      email,
-      phone,
-      birthday
-    );
+
     PatientsRepository.findById(id)
       .then((existingPatient) => {
         if (!existingPatient) {
