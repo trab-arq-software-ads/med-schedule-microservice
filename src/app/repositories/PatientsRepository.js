@@ -5,7 +5,7 @@ class PatientRepository {
     const [row] = await db.query(
       `
       INSERT INTO patients(name, email, phone)
-      VALUES($1, $2, $3, $4)
+      VALUES($1, $2, $3)
       RETURNING *
       `,
       [name, email, phone]
